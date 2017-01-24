@@ -1,0 +1,56 @@
+{% extends "templates/layout.html" %}
+{% block title %}
+<h1>New track</h1>
+{% endblock %}
+{% block content %}
+<!-- <form action="persist&#45;track" method="post"> -->
+<!--   <div class="form&#45;group"> -->
+<!--     <label for="url">Url</label> -->
+<!--     <input type="url" class="form&#45;control" name="url" id="url" required> -->
+<!--   </div> -->
+<!--   <div class="form&#45;group"> -->
+<!--     <label for="note">Note</label> -->
+<!--     <input type="text" class="form&#45;control" name="note" id="note" required> -->
+<!--   </div> -->
+<!--   <div class="checkbox"> -->
+<!--     <label><input type="checkbox" name="download" id="download" value="1">Download immediatelly</label> -->
+<!--   </div> -->
+<!--   <div class="checkbox"> -->
+<!--     <label><input type="checkbox" name="convert_to_mp3" id="convert_to_mp3" value="1">Convert to mp3</label> -->
+<!--   </div> -->
+<!--   <button type="submit" class="btn btn&#45;default">Submit</button> -->
+<!-- </form> -->
+<form class="form-horizontal" action="persist-track" method="post">
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="url">Url</label>
+    <div class="col-sm-10">
+      <input type="url" class="form-control" id="url" name="url" placeholder="Enter url" required>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="note">Note</label>
+    <div class="col-sm-10"> 
+      <input type="text" class="form-control" id="note" name="note" placeholder="Enter a note">
+    </div>
+  </div>
+  <div class="form-group"> 
+    <div class="col-sm-offset-2 col-sm-10">
+      <div class="checkbox pull-left">
+        <label><input type="checkbox" name="download" value="1" checked>Download immediatelly</label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group"> 
+    <div class="col-sm-offset-2 col-sm-10">
+      <div class="checkbox pull-left">
+        <label><input type="checkbox" name="convert_to_mp3" value="1" checked>Convert to mp3</label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group"> 
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" class="btn btn-default pull-right">Submit</button>
+    </div>
+  </div>
+</form>
+{% endblock %}

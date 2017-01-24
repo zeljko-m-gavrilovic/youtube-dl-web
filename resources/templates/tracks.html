@@ -1,0 +1,36 @@
+{% extends "templates/layout.html" %}
+{% block title %}
+<h1>All tracks metadata</h1>
+{% endblock %}
+{% block content %}
+<a href="track-form" class="btn btn-default pull-right">New track</a>
+<br/>
+<br/>
+<table class="table table-bordered table-striped table-hover table-responsive">
+<!-- <thead>
+<tr>
+    <th>Title</th> 
+    <th>Time</th>
+    <th>Status</th>
+    <th>Thumbnail</th>
+    <th>Actions</th>
+    </tr>
+</thead> -->
+<tbody>
+{% for track in tracks %}
+<tr> 
+    <td class="text-justify">Title: {{track.title}} 
+    <br/>Url: {{track.url}} 
+    <br/>Note:{{track.note}}
+    <br>Status:{{track.status}}</td>
+    <td class="text-justify">Duration:{{track.track_duration}} 
+    <br/>Downloaded at:{{track.downloaded_at}}
+    <br/>Download period:{{track.download_duration}} 
+    <td class="text-justify"><img src="{{track.thumbnail}}" width="50px" height="50px"></td> 
+    <td class="text-justify"><a href="/delete/{{track.id}}">Delete</a>  
+        <a href="/download/{{track.id}}">Download</a></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock %}
