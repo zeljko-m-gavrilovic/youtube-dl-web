@@ -25,9 +25,9 @@
       (def id (tracks/create 
                 {:url url :note note :directory directory 
                  :title fulltitle :track_duration track_duration 
-                 :thumbnail thumbnail :convert_to_mp3 convert_to_mp3}))
+                 :thumbnail thumbnail :convert_to_mp3 convert_to_mp3} tracks/db))
       (println "*&^id" id)           
-      (if download_flag (tracks/download id))
+      (if download_flag (tracks/download id tracks/db))
       (resp/redirect "/")))
 
 
@@ -38,7 +38,7 @@
      (GET "/about" [] (render-file "templates/about.html" {}))
      
      (GET "/download/:id" [id] ( 
-            do (tracks/download id)
+            do (tracks/download id tracks/db)
             (resp/redirect "/")))
      
      (GET "/track-form" [] 
@@ -47,7 +47,7 @@
      (POST "/persist-track" [] persist-track)
      
      (GET "/delete/:id" [id]
-      (do (tracks/delete id)
+      (do (tracks/delete id tracks/db)
        (resp/redirect "/")))
      
      (route/not-found "<h1>Page not found</h1>"))
