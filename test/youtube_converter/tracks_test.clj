@@ -19,22 +19,52 @@
 ;; (use-fixtures
 ;;   :once
 ;;   same as above)
-(declare ^:dynamic tnx) 
+(declare ^:dynamic tx)
 (use-fixtures
   :each
   (fn [f]
     (jdbc/with-db-transaction
       [transaction tracks/db]
-        (jdbc/db-set-rollback-only! transaction)
-      (binding [tnx transaction] (f)))))
+      (jdbc/db-set-rollback-only! transaction)
+      (binding [tx transaction] (f)))))
 
 
 
-(deftest test-pesrsisting-one-track
+(deftest when-persist-track-has-id
   (testing "persistence of one track"
-    (let [id (tracks/create {:url oneSongUrl :title "testname" :note "testdescription"} tnx)]
-    (is (not (nil? id)))
-)))
+    (let [id (tracks/create {:url oneSongUrl :title "testname" :note "testdescription"} tx)]
+      (is (not (nil? id)))
+      )))
+
+(deftest when-get-by-id-track-is-found
+  (testing "finding the track by its id"
+    (let [id (tracks/create {:url oneSongUrl :title "testname" :note "testdescription"} tx)
+          track (tracks/get-by-id id tx)]
+      (is (not (nil? id)))
+      (is (not (nil? (:id track))))
+      )))
+
+(deftest when-delete-by-id-track-is-gone
+  (testing "deleting the track by its id"
+    (let [id (tracks/create {:url oneSongUrl :title "testname" :note "testdescription"} tx)]
+      (is (not (nil? id)))
+      (tracks/delete id tx)
+      (is (nil? (tracks/get-by-id id tx)))
+      )))
+
+(deftest when-downloaded-status-and-duration-are-populated
+  (testing "downloading the track"
+    (let [id (tracks/create {:url oneSongUrl :title "testname" :note "testdescription"} tx)
+          response (tracks/download id tx)
+          track (tracks/get-by-id id tx)
+          ]
+      (is (not (nil? id)))
+      (is (not (nil? response)))
+      (is (not (nil? (:status track))))
+      (is (= (:status track) "downloaded"))
+      (def track2 track)
+      (is (pos? (:track_duration track)))
+      )))
 ;; (println (. videoInfo fulltitle))
 ;; (println (. videoInfo duration))
 ;; (println (. videoInfo description))

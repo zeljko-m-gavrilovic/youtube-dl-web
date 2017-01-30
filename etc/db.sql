@@ -1,6 +1,4 @@
-DROP TABLE IF EXISTS `tracks`;
-
-CREATE TABLE `tracks` (
+CREATE TABLE IF NOT EXISTS `tracks` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `url` varchar(256) NOT NULL,
   `title` varchar(256) DEFAULT NULL,
@@ -13,5 +11,4 @@ CREATE TABLE `tracks` (
   `directory` varchar(256) DEFAULT NULL,
   `download_duration` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
+);
