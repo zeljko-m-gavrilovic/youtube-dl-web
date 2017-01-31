@@ -11,7 +11,7 @@
 
 (def h2-db {:classname   "org.h2.Driver"
             :subprotocol "h2:file"
-            :subname     "youtube-dl-web;MODE=MYSQL;INIT=runscript from 'etc/db.sql'"
+            :subname     "youtube-dl-web;MODE=MYSQL;INIT=runscript from 'classpath:db.sql'"
             :user        "sa"
             :password    ""})
 

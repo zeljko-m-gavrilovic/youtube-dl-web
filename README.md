@@ -1,20 +1,20 @@
-# youtube-converter
+# youtube-dl-web
 
-This web application is a tiny wrapper around the [youtube-dl](https://rg3.github.io/youtube-dl) and [youtubedl-java](https://github.com/sapher/youtubedl-java) libraries.
-It enables an end user to download a youtube video or playlist and eventually convert them to the mp3 format.
+This web application is a tiny wrapper around the [youtube-dl](https://rg3.github.io/youtube-dl) 
+and [youtubedl-java](https://github.com/sapher/youtubedl-java) libraries.
+It provides an end user functionality to download a youtube video or playlist and eventually convert it/them to the mp3 format.
 
 ## Prerequisite
-In order to run this application you will need to have the folowing software:
+In order to run this application you will need to have the folowing software installed on your machine:
 
 * [java] (http://www.oracle.com/technetwork/java/javase/downloads/index.html)
 * [youtube-dl](https://rg3.github.io/youtube-dl)
 * [avconv](https://libav.org) or [ffmpeg](https://www.ffmpeg.org)
 
 ## Usage
-* Go to the youtube-dl-web folder and run the application with
-`java -jar youtube-dl-web-uberjar.jar`
-* Open the browser and go to the application
-`http://localhost:3000/`
+* Enter the folder where you clone youtube-dl-web folder and run the application with:
+`java -jar youtube-converter-0.1.0-SNOT-standalone.jar`
+* Open the browser and go to the application [http://localhost:3000](http://localhost:3000)
 
 ## Screenshots
 
