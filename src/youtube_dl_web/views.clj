@@ -1,8 +1,8 @@
-(ns youtube-converter.views
+(ns youtube-dl-web.views
   (:require [hiccup.core :refer (html)]
             [hiccup.form :as f]
             [hiccup.page :as p]
-            [youtube-converter.tracks :as tracks]))
+            [youtube-dl-web.tracks :as tracks]))
 
 (defn layout [title & content]
   (p/html5

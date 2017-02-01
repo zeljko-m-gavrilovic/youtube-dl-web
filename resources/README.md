@@ -38,8 +38,8 @@ of [this project](https://github.com/zeljko-m-gavrilovic/youtube-dl-web.git).
 
 ## Screenshots
 
-GUI part of the application is a matter of a fast change so the screenshots can very soon be out of date but here are 
-few of them just to get a "feeling" how does it look:
+GUI part of the application is a matter of change so the screenshots can very soon be out of date but here are 
+few just to get a "feeling" how does it look
 ![Alt text](/form-screenshot.png?raw=true "Form to enter new track")
 ![Alt text](/list-screenshot.png?raw=true "list of entered tracks")
 

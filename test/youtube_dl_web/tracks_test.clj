@@ -1,8 +1,8 @@
-(ns youtube-converter.tracks-test
+(ns youtube-dl-web.tracks-test
   (:require [clojure.test :refer :all]
             [ring.mock.request :as mock]
-            [youtube-converter.core :refer :all]
-            [youtube-converter.tracks :as tracks]
+            [youtube-dl-web.core :refer :all]
+            [youtube-dl-web.tracks :as tracks]
             [clojure.java.jdbc :as jdbc]))
 
 (def oneSongUrl "https://www.youtube.com/watch?v=K6uZ0nyWxnc")

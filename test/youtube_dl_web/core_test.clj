@@ -1,18 +1,32 @@
-(ns youtube-converter.core-test
+(ns youtube-dl-web.core-test
 
   (:require [clojure.test :refer :all]
             [ring.mock.request :as mock]
-            [youtube-converter.core :refer :all]
-            [youtube-converter.tracks :as tracks]))
+            [youtube-dl-web.core :refer :all]
+            [youtube-dl-web.tracks :as tracks]))
 
-(deftest test-app
+(def oneSongUrl "https://www.youtube.com/watch?v=K6uZ0nyWxnc")
 
-  (testing "main route"
+(deftest test-index
+  (testing "index route"
     (let [response (app (mock/request :get "/"))]
       (is (= (:status response) 200))
       ;(is (= (:body response) "Hello World")
       )))
-      
+
+(deftest test-about 
+  (testing "about route"
+    (let [response (app (mock/request :get "/about"))]
+      (is (= (:status response) 200))
+      )))
+
+
+(deftest test-new 
+  (testing "new route"
+    (let [response (app (mock/request :post "/persist-track" {:url oneSongUrl :note "for unit testing purpose"}))]
+      (is (= (:status response) 302))
+      )))
+
 (deftest test-invalid
   (testing "not-found route"
     (let [response (app (mock/request :get "/invalid"))]

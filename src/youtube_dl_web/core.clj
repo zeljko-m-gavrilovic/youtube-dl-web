@@ -1,12 +1,16 @@
-(ns youtube-converter.core
+(ns youtube-dl-web.core
   (:import (com.sapher.youtubedl YoutubeDLRequest YoutubeDL YoutubeDLResponse))
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [ring.util.response :as resp]
-            [youtube-converter.views :as views]
-            [youtube-converter.tracks :as tracks]
-            [selmer.parser :refer [render-file]])
+            ;; [youtube-dl-web.views :as views]
+            [youtube-dl-web.tracks :as tracks]
+            [selmer.parser :refer [render-file]]
+            [selmer.filters :refer [add-filter!]]
+            [markdown.core :as md]
+            [clojure.java.io :as io]
+            )
   )
 
 
@@ -26,16 +30,16 @@
               {:url       url :note note :directory directory
                :title     fulltitle :track_duration track_duration
                :thumbnail thumbnail :convert_to_mp3 convert_to_mp3} tracks/db))
-    (println "*&^id" id)
     (if download_flag (tracks/download id tracks/db))
     (resp/redirect "/")))
 
-
+(add-filter! :markdown md/md-to-html-string)
 
 (defroutes app-routes
            (GET "/" [] (render-file "templates/tracks.html" {:tracks (tracks/all tracks/db)}))
 
-           (GET "/about" [] (render-file "templates/about.html" {}))
+           ;; (GET "/about" [] (render-file "templates/about.html" {}))
+           (GET "/about" [] (render-file "templates/about.html" {:about (slurp (io/resource "README.md"))}))
 
            (GET "/download/:id" [id] (
                                        do (tracks/download id tracks/db)
