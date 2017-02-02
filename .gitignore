@@ -10,7 +10,8 @@ pom.xml.asc
 .hgignore
 .hg/
 .idea/
-.DS_Store
-src/.DS_Store
-test/.DS_Store
+**/.DS_Store
 youtube-converter.iml
+**/.mp3
+**/.mkv
+**.h2.db
