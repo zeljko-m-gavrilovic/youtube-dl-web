@@ -16,13 +16,13 @@ from one format to another.
 
 ## Run the application
 
-Enter the folder where you cloned [this project](https://github.com/zeljko-m-gavrilovic/youtube-dl-web.git) 
-and run the application in a terminal with:
+From the dist folder of [this project](https://github.com/zeljko-m-gavrilovic/youtube-dl-web.git) run the application in a terminal with:
 
-    `java -jar youtube-dl-web-0.1.0-SNAPSHOT-standalone.jar`
+    java -jar youtube-dl-web-0.1.0-SNAPSHOT-standalone.jar
 
 Open the web browser and go to the application main page 
-[http://localhost:3000](http://localhost:3000).
+[http://localhost:3000](http://localhost:3000). In case the port 3000 is already occupied, application will try to use 
+the next available free port i.e. 3001.
 
 ## Usage
 
@@ -32,16 +32,26 @@ There are basically few functionalities supported:
 * downloading and converting tracks,
 * deleting the track.
 
-Tracks can be downloaded and converted automatically when a new track is added or it can be triggered from 
+
+Adding a new track is easy. From the main page of the application click on button "new track". Then, enter the value for the mandatory field url. 
+Other fields are optional. Submit the form and will be redirected to the main page where you can see the track you've added. 
+From the main pge you can preview tracks, download or delete them.
+
+Note that there are checkboxes "download" and "convert to mp3" on the page where you can add a new track. Checking the "download" option will download the
+track/playlist automaticaly after the track is persisted. Checking the option "convert to mp3" will convert your video url to audio track.
+
+
+In case the downloaded and converted automatically when a new track is added or it can be triggered from 
 the listing showing all the entered tracks. Downloaded tracks can be found on a file system inside the folder
-of [this project](https://github.com/zeljko-m-gavrilovic/youtube-dl-web.git). 
+of [this project](https://github.com/zeljko-m-gavrilovic/youtube-dl-web.git).
+
 
 ## Screenshots
 
 GUI part of the application is a matter of a fast change so the screenshots can very soon be out of date but here are 
 few of them just to get a "feeling" how does it look:
-![Alt text](https://github.com/zeljko-m-gavrilovic/youtube-dl-web/blob/master/resources/public/form-screenshot.png?raw=true "Form to enter new track")
-![Alt text](https://github.com/zeljko-m-gavrilovic/youtube-dl-web/blob/master/resources/public/list-screenshot.png?raw=true "List of entered tracks")
+![Form screenshot](https://github.com/zeljko-m-gavrilovic/youtube-dl-web/blob/master/resources/public/form-screenshot.png?raw=true "Form to enter new track")
+![List screenshot](https://github.com/zeljko-m-gavrilovic/youtube-dl-web/blob/master/resources/public/list-screenshot.png?raw=true "List of entered tracks")
 
 
 

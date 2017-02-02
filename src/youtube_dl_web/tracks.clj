@@ -33,6 +33,9 @@
 (defn get-by-id [id tnx]
   (first (j/query tnx ["select * from tracks where id=?" id])))
 
+(defn get-by-url [url tnx]
+  (first (j/query tnx ["select * from tracks where url=?" url])))
+
 (defn create [params tnx]
     (let [
         result (first (j/insert! tnx :tracks params))

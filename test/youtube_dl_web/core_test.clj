@@ -6,42 +6,51 @@
             [youtube-dl-web.tracks :as tracks]))
 
 (def oneSongUrl "https://www.youtube.com/watch?v=K6uZ0nyWxnc")
+(def playlistUrl "https://www.youtube.com/playlist?list=PLEy7dHChv8e21yQuAyc_cqUSDi95LG9sr")
 
-(deftest test-index
-  (testing "index route"
+(deftest index-page-reachable
+  (testing "index page reached"
     (let [response (app (mock/request :get "/"))]
       (is (= (:status response) 200))
-      ;(is (= (:body response) "Hello World")
       )))
 
-(deftest test-about 
-  (testing "about route"
+(deftest about-page-is-reachable
+  (testing "about page is reachable"
     (let [response (app (mock/request :get "/about"))]
       (is (= (:status response) 200))
       )))
 
-
-(deftest test-new 
-  (testing "new route"
-    (let [response (app (mock/request :post "/persist-track" {:url oneSongUrl :note "for unit testing purpose"}))]
-      (is (= (:status response) 302))
-      )))
-
-(deftest test-invalid
-  (testing "not-found route"
+(deftest for-invalid-request-you-will-get-404-response
+  (testing "for an invalid request you will get page not found response"
     (let [response (app (mock/request :get "/invalid"))]
-      (is (= (:status response) 404)))))     
+      (is (= (:status response) 404))))) 
 
-;; (deftest test-download-one-song
-;;   (testing "downloading one song"
-;;     (let [response (app (mock/request :get "/download/16"))]
-;;       (is (= (:status response) 200)))))     
-;; (deftest test-download-unit
-;;   (testing "downloading-unit:
-;;     (let [track (tracks/download 16)]
-;;     (track))))
-;;
-;; (let [track (tracks/download 16)]
-;;     (track))
-;; (run-tests)
-;; (let [track (tracks/download 16)]((println (.getOut track))) (println (.getErr track)))
+(deftest track-can-be-persisted 
+  (testing "persisting a track"
+    (let [response (app (mock/request :post "/persist-track" {:url oneSongUrl :note "for unit testing purpose"}))]
+      (is (= (:status response) 302)))
+    (let [track (tracks/get-by-url oneSongUrl tracks/db)] 
+        (is (not (nil? track)))
+        (tracks/delete (:id track) tracks/db))
+))
+
+(defn download-url [url]
+    (let [response (app (mock/request :post "/persist-track" {:url url :note "for unit testing purpose" :convert_to_mp3 1 :download 1}))]
+        (is (= (:status response) 302)))
+    (let [downloaded (tracks/get-by-url url tracks/db)]
+        (is (not (nil? downloaded)))
+        (is (= (:status downloaded) "downloaded"))
+        (is (pos? (:track_duration downloaded)))
+        (tracks/delete (:id downloaded) tracks/db)
+ ))
+
+(deftest possible-to-download-one-song 
+  (testing "download one song"
+   (download-url oneSongUrl)
+))
+
+(deftest possible-to-download-playlist 
+  (testing "download all songs from playlist"
+   (download-url playlistUrl)
+))
+
