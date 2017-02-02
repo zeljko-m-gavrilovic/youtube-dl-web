@@ -19,10 +19,11 @@ from one format to another.
 Enter the folder where you cloned [this project](https://github.com/zeljko-m-gavrilovic/youtube-dl-web.git) 
 and run the application in a terminal with:
 
-    `java -jar youtube-dl-web-0.1.0-SNAPSHOT-standalone.jar`
+    java -jar youtube-dl-web-0.1.0-SNAPSHOT-standalone.jar
 
 Open the web browser and go to the application main page 
-[http://localhost:3000](http://localhost:3000).
+[http://localhost:3000](http://localhost:3000). In case the port 3000 is already occupied, application will try to use 
+the next available free port i.e. 3001.
 
 ## Usage
 
@@ -40,8 +41,8 @@ of [this project](https://github.com/zeljko-m-gavrilovic/youtube-dl-web.git).
 
 GUI part of the application is a matter of a fast change so the screenshots can very soon be out of date but here are 
 few of them just to get a "feeling" how does it look:
-![Alt text](https://github.com/zeljko-m-gavrilovic/youtube-dl-web/blob/master/resources/public/form-screenshot.png?raw=true "Form to enter new track")
-![Alt text](https://github.com/zeljko-m-gavrilovic/youtube-dl-web/blob/master/resources/public/list-screenshot.png?raw=true "List of entered tracks")
+![Form screenshot](https://github.com/zeljko-m-gavrilovic/youtube-dl-web/blob/master/resources/public/form-screenshot.png?raw=true "Form to enter new track")
+![List screenshot](https://github.com/zeljko-m-gavrilovic/youtube-dl-web/blob/master/resources/public/list-screenshot.png?raw=true "List of entered tracks")
 
 
 
