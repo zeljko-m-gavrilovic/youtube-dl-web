@@ -13,6 +13,9 @@
   )
 
 (add-filter! :markdown md/md-to-html-string)
+(add-filter! :format-seconds-to-minutes tracks/format-seconds-to-minutes)
+(add-filter! :format-miliseconds-to-minutes tracks/format-miliseconds-to-minutes)
+(add-filter! :format-time tracks/format-time)
 
 (defroutes app-routes
     (GET "/" [] (render-file "templates/tracks.html" {:tracks (tracks/all tracks/db)}))

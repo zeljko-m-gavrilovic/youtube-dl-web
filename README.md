@@ -33,17 +33,13 @@ There are basically few functionalities supported:
 * deleting the track.
 
 
-Adding a new track is easy. From the main page of the application click on button "new track". Then, enter the value for the mandatory field url. 
-Other fields are optional. Submit the form and will be redirected to the main page where you can see the track you've added. 
-From the main pge you can preview tracks, download or delete them.
+Adding a new track is easy. From the main page of the application click on the button "new track". Then enter the value for the mandatory field url. 
+Other fields are optional. Submit the form and you will be redirected back to the main page where you can see the track you've just added. 
+From the main page you can preview tracks, download or delete them. Tracks are downloaded into adequate sub folder(s) of the `downloads` folder where you
+started the application.
 
-Note that there are checkboxes "download" and "convert to mp3" on the page where you can add a new track. Checking the "download" option will download the
-track/playlist automaticaly after the track is persisted. Checking the option "convert to mp3" will convert your video url to audio track.
-
-
-In case the downloaded and converted automatically when a new track is added or it can be triggered from 
-the listing showing all the entered tracks. Downloaded tracks can be found on a file system inside the folder
-of [this project](https://github.com/zeljko-m-gavrilovic/youtube-dl-web.git).
+Note that there are checkboxes "download" and "convert to mp3" on the page where you can add a new track. Checking the option "download" downloads the
+track/playlist automaticaly after the track is persisted. Checking the option "convert to mp3" will convert your video to audio track.
 
 
 ## Screenshots
@@ -53,7 +49,22 @@ few of them just to get a "feeling" how does it look:
 ![Form screenshot](https://github.com/zeljko-m-gavrilovic/youtube-dl-web/blob/master/resources/public/form-screenshot.png?raw=true "Form to enter new track")
 ![List screenshot](https://github.com/zeljko-m-gavrilovic/youtube-dl-web/blob/master/resources/public/list-screenshot.png?raw=true "List of entered tracks")
 
+## Develepors reminder
 
+A few notes for developers:
+
+* Clone the repository i.e. type the following git command in a terminal:
+```
+    git clone https://github.com/zeljko-m-gavrilovic/youtube-dl-web.git ~/youtube-dl-web 
+```
+* Run the tests:
+```
+    lein test
+```
+* Start the application:
+```
+    lein ring server
+```
 
 ## Some background info
 

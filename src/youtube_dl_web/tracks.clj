@@ -50,6 +50,24 @@
 (defn delete [id tnx]
   (j/delete! tnx :tracks ["id=?" id]))
 
+(defn format-seconds-to-minutes [seconds] 
+    (if (> seconds 60)
+        (str (quot seconds 60) "m:" (rem seconds 60) "s")
+        (str seconds "s")
+    )
+) 
+
+(defn format-miliseconds-to-minutes [miliseconds] 
+    (if (> miliseconds 1000)
+        (str (quot miliseconds 1000) "s:" (rem miliseconds 1000) "ms")
+        (str miliseconds "ms")
+    )
+) 
+
+(defn format-time [date]
+(.format (java.text.SimpleDateFormat. "dd.MM.yyyy HH:mm:ss") date))
+
+
 (defn download [id tnx] (
     let [
         track (get-by-id id tnx)
@@ -61,12 +79,14 @@
             (do (. request setOption "audio-format" "mp3")
                 (. request setOption "extract-audio"))
         )
+        (. request setOption "o" "downloads/%(playlist)s/%(playlist_index)s-%(title)s.%(ext)s")
+        (. request setOption "format" "mp4")
         (let [
             response (. YoutubeDL execute request)
             ]
             (update-track   id {:status "downloaded" 
                                 :downloaded_at now 
-                                :track_duration (. response getElapsedTime)} 
+                                :download_duration (. response getElapsedTime)} 
                             tnx)
         response)
     )
