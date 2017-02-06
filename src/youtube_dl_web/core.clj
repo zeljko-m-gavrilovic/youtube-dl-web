@@ -1,47 +1,47 @@
 (ns youtube-dl-web.core
-  (:import (com.sapher.youtubedl YoutubeDLRequest YoutubeDL YoutubeDLResponse))
-  (:require [compojure.core :refer :all]
-            [compojure.route :as route]
-            [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
+  (:require [compojure.core :as cc]
+            [compojure.route :as cr]
+            [ring.middleware.defaults :as rmd]
             [ring.util.response :as resp]
             [youtube-dl-web.tracks :as tracks]
-            [selmer.parser :refer [render-file]]
-            [selmer.filters :refer [add-filter!]]
+            [selmer.parser :as sp]
+            [selmer.filters :as sf]
             [markdown.core :as md]
-            [clojure.java.io :as io]
-            )
-  )
+            [clojure.java.io :as io])
+    (:import (com.sapher.youtubedl YoutubeDLRequest YoutubeDL YoutubeDLResponse)))
 
-(add-filter! :markdown md/md-to-html-string)
-(add-filter! :format-seconds-to-minutes tracks/format-seconds-to-minutes)
-(add-filter! :format-miliseconds-to-minutes tracks/format-miliseconds-to-minutes)
-(add-filter! :format-time tracks/format-time)
+(sf/add-filter! :markdown md/md-to-html-string)
+(sf/add-filter! :format-seconds-to-minutes tracks/format-seconds-to-minutes)
+(sf/add-filter! :format-miliseconds-to-minutes tracks/format-miliseconds-to-minutes)
+(sf/add-filter! :format-time tracks/format-time)
 
-(defroutes app-routes
-    (GET "/" [] (render-file "templates/tracks.html" {:tracks (tracks/all tracks/db)}))
+(defn file-exist [tracks]
+  (map (fn [t] (assoc t :file-exist (.exists (io/file (:file_path t))))) tracks))
 
-    (GET "/about" [] (render-file "templates/about.html" {:about (slurp (io/resource "README.md"))}))
+(cc/defroutes app-routes
+    (cc/GET "/" [] 
+      (sp/render-file "templates/tracks.html" {:tracks (tracks/all tracks/db)}))
 
-    (GET "/download/:id" [id] (do 
-        (tracks/download id tracks/db)
-        (resp/redirect "/")
-    ))
+    (cc/GET "/about" [] 
+      (sp/render-file "templates/about.html" {:about (slurp (io/resource "README.md"))}))
 
-    (GET "/track-form" []
-        (render-file "templates/track-form.html" {}))
+    (cc/GET "/download/:id" [id] (do 
+      (tracks/download id tracks/db)
+      (resp/redirect "/")))
 
-    (POST "/persist-track" request 
+    (cc/GET "/track-form" []
+      (sp/render-file "templates/track-form.html" {}))
+
+    (cc/POST "/persist-track" request 
         (tracks/persist-track (:params request))
-        (resp/redirect "/")
-    )
+        (resp/redirect "/"))
 
-    (GET "/delete/:id" [id]
+    (cc/GET "/delete/:id" [id]
         (tracks/delete id tracks/db)
-        (resp/redirect "/")
-    )
+        (resp/redirect "/"))
 
-    (route/not-found "<h1>Page not found</h1>"))
+    (cr/not-found "<h1>Page not found</h1>"))
 
 (def app
-  (-> (routes app-routes)
-      (wrap-defaults (assoc-in site-defaults [:security :anti-forgery] false))))
+  (-> (cc/routes app-routes)
+      (rmd/wrap-defaults (assoc-in rmd/site-defaults [:security :anti-forgery] false))))

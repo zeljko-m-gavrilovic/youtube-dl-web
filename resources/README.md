@@ -54,14 +54,18 @@ few of them just to get a "feeling" how does it look:
 A few notes for developers:
 
 * Clone the repository i.e. type the following git command in a terminal:
+
 ```
     git clone https://github.com/zeljko-m-gavrilovic/youtube-dl-web.git ~/youtube-dl-web 
 ```
 * Run the tests:
+
 ```
     lein test
 ```
+
 * Start the application:
+
 ```
     lein ring server
 ```
