@@ -124,6 +124,7 @@ Deleting original file downloads/NA/NA-SluÄajni Prolaznik - Godine.mp4 (pass 
         (.setOption request "extract-audio"))
     (.setOption request "o" "downloads/%(playlist)s/%(playlist_index)s-%(title)s.%(ext)s")
     (.setOption request "format" "mp4")
+    (.setOption request "restrict-filenames")
     (let [response (YoutubeDL/execute request)
           playlist (playlist? response)
           file-path (extract-file-path response (:convert_to_mp3 track))]
@@ -153,3 +154,9 @@ Deleting original file downloads/NA/NA-SluÄajni Prolaznik - Godine.mp4 (pass 
                     :convert_to_mp3 convert_to_mp3}
                    db)]
     (if download_flag (download id db))))
+
+(defn file-exist [track]
+    (.exists (io/file (:file_path track))))
+
+(defn files-exist [tracks]
+  (map (fn [track] (assoc track :file_exist (file-exist track))) tracks))

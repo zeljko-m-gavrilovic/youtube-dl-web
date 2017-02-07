@@ -61,3 +61,29 @@
       (is (= (:status track) "downloaded"))
       ;; (is (pos? (:track_duration track)))
       )))
+
+(deftest song-track-has-correct-file-path
+  (testing "song track has the correct file path"
+    (let [id (tracks/create {:url one-song-url :title "testname" :note "testdescription"} tx)
+          response (tracks/download id tx)
+          tracks (tracks/all tx)]
+      (is (not (nil? id)))
+      (is (not (nil? response)))
+      (is (not (nil? tracks)))
+      (is (not (empty? tracks)))
+      (is (= (count tracks) 1))
+      (is (tracks/file-exist (first tracks)))
+      )))
+
+(deftest playlist-track-has-correct-file-path
+  (testing "playlist track has the correct file path"
+    (let [id (tracks/create {:url playlist-url :title "testname" :note "testdescription"} tx)
+          response (tracks/download id tx)
+          tracks (tracks/all tx)]
+      (is (not (nil? id)))
+      (is (not (nil? response)))
+      (is (not (nil? tracks)))
+      (is (not (empty? tracks)))
+      (is (= (count tracks) 1))
+      (is (tracks/file-exist (first tracks)))
+      )))

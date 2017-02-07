@@ -27,6 +27,7 @@
     <br/>Download duration: {{track.download_duration|format-miliseconds-to-minutes}} 
     <br/>Downloaded at: {{track.downloaded_at|format-time}}
     <br/>File path: {{track.file_path}}
+    <br/>File exist: {{track.file_exist}}
     <td class="text-center"><img src="{{track.thumbnail}}" width="50px" height="50px"></td> 
     <td class="text-center"><a href="/delete/{{track.id}}">Delete</a> |   
          <a href="/download/{{track.id}}">Download</a></td>

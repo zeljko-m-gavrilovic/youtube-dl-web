@@ -7,20 +7,17 @@
             [selmer.parser :as sp]
             [selmer.filters :as sf]
             [markdown.core :as md]
-            [clojure.java.io :as io])
-    (:import (com.sapher.youtubedl YoutubeDLRequest YoutubeDL YoutubeDLResponse)))
+            [clojure.java.io :as io]))
 
 (sf/add-filter! :markdown md/md-to-html-string)
 (sf/add-filter! :format-seconds-to-minutes tracks/format-seconds-to-minutes)
 (sf/add-filter! :format-miliseconds-to-minutes tracks/format-miliseconds-to-minutes)
 (sf/add-filter! :format-time tracks/format-time)
 
-(defn file-exist [tracks]
-  (map (fn [t] (assoc t :file-exist (.exists (io/file (:file_path t))))) tracks))
 
 (cc/defroutes app-routes
     (cc/GET "/" [] 
-      (sp/render-file "templates/tracks.html" {:tracks (tracks/all tracks/db)}))
+      (sp/render-file "templates/tracks.html" {:tracks (tracks/files-exist (tracks/all tracks/db))}))
 
     (cc/GET "/about" [] 
       (sp/render-file "templates/about.html" {:about (slurp (io/resource "README.md"))}))
