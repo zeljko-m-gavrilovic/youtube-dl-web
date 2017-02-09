@@ -9,6 +9,26 @@
 
 (def playlist-url "https://www.youtube.com/playlist?list=PLEy7dHChv8e21yQuAyc_cqUSDi95LG9sr")
 
+(defn persist-track-request [url download? convert?]
+  (let [response (core/app (mock/request :post "/persist-track" {:url url :note "for unit testing purpose" :download download? :convert_to_mp3 convert?}))]
+    (is (= (:status response) 302))))
+
+(defn download-track-request [url]
+  (let [track (tracks/get-by-url url tracks/db)
+        response (core/app (mock/request :get (str "/download/" (:id track))))]
+    (is (= (:status response) 302))))
+
+(defn delete-persisted-track [url] 
+  (let [track (tracks/get-by-url url tracks/db)]
+    (is (not (nil? track)))
+    (tracks/delete (:id track))))
+
+(defn check-persisted-track [url status] 
+  (let [track (tracks/get-by-url url tracks/db)]
+    (is (not (nil? track)))
+    (is (= (:status track) status))
+    (is (pos? (:track_duration track)))))
+
 (deftest index-page-reachable
   (testing "index page reached"
     (let [response (core/app (mock/request :get "/"))]
@@ -24,27 +44,34 @@
     (let [response (core/app (mock/request :get "/invalid"))]
       (is (= (:status response) 404)))))
 
-(deftest track-can-be-persisted
-  (testing "persisting a track"
-    (let [response (core/app (mock/request :post "/persist-track" {:url one-song-url :note "for unit testing purpose"}))]
-      (is (= (:status response) 302)))
-    (let [track (tracks/get-by-url one-song-url tracks/db)]
-      (is (not (nil? track)))
-      (tracks/delete (:id track) tracks/db))))
+(deftest persist-one-song-no-download-and-no-convert
+  (testing "persist one song, don't download and don't convert to mp3"
+    (persist-track-request one-song-url false false)
+    (check-persisted-track one-song-url nil)
+    (delete-persisted-track one-song-url)))
 
-(defn download-url [url]
-  (let [response (core/app (mock/request :post "/persist-track" {:url url :note "for unit testing purpose" :convert_to_mp3 1 :download 1}))]
-    (is (= (:status response) 302)))
-  (let [downloaded (tracks/get-by-url url tracks/db)]
-    (is (not (nil? downloaded)))
-    (is (= (:status downloaded) "downloaded"))
-    (is (pos? (:track_duration downloaded)))
-    (tracks/delete (:id downloaded) tracks/db)))
+(deftest persist-one-song-no-download-and-no-convert-then-download
+  (testing "persist one song, don't download and don't convert to mp3 and then download it"
+    (persist-track-request one-song-url false false)
+    (check-persisted-track one-song-url nil)
+    (download-track-request one-song-url)
+    (check-persisted-track one-song-url "downloaded")
+    (delete-persisted-track one-song-url)))
 
-(deftest possible-to-download-one-song
-  (testing "download one song"
-    (download-url one-song-url)))
+(deftest persist-one-song-no-download-and-convert
+  (testing "persist one song, don't download and mark to convert to mp3"
+    (persist-track-request one-song-url false true)
+    (check-persisted-track one-song-url nil)
+    (delete-persisted-track one-song-url)))
 
-(deftest possible-to-download-playlist
-  (testing "download all songs from playlist"
-    (download-url playlist-url)))
+(deftest persist-one-song-download-and-convert
+  (testing "persist one song marked to download and convert to mp3"
+    (persist-track-request one-song-url true true)
+    (check-persisted-track one-song-url "downloaded")
+    (delete-persisted-track one-song-url)))
+
+(deftest persist-one-song-download-no-conversion
+  (testing "persist one song marked to download without conversion"
+    (persist-track-request one-song-url true false)
+    (check-persisted-track one-song-url "downloaded")
+    (delete-persisted-track one-song-url)))

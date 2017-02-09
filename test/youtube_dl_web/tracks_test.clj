@@ -20,25 +20,25 @@
 
 (deftest after-persisting-a-track-it-has-id
   (testing "persisting one track"
-    (let [id (tracks/create {:url one-song-url :title "testname" :note "testdescription"} tx)]
+    (let [id (tracks/persist-track {:url one-song-url :title "testname" :note "testdescription"} tx)]
       (is (not (nil? id))))))
 
 (deftest track-can-be-found-by-id
   (testing "track can be found by id"
-    (let [id (tracks/create {:url one-song-url :title "testname" :note "testdescription"} tx)
+    (let [id (tracks/persist-track {:url one-song-url :title "testname" :note "testdescription"} tx)
           track (tracks/get-by-id id tx)]
       (is (not (nil? id))))))
 
 (deftest track-can-be-delete-by-id
 (testing "track can be deleted by the tracks id"
-    (let [id (tracks/create {:url one-song-url :title "testname" :note "testdescription"} tx)]
+    (let [id (tracks/persist-track {:url one-song-url :title "testname" :note "testdescription"} tx)]
       (is (not (nil? id)))
       (tracks/delete id tx)
       (is (nil? (tracks/get-by-id id tx))))))
 
-(deftest track-can-be-downloaded-and-status-and-duration-are-populated
-(testing "downloaded track has the adequate status, file path and title"
-    (let [id (tracks/create {:url one-song-url :title "testname" :note "testdescription"} tx)
+(deftest after-downloading-one-song-status-and-duration-are-populated
+(testing "downloaded track has the adequate status and duration"
+    (let [id (tracks/persist-track {:url one-song-url :title "testname" :note "testdescription"} tx)
           response (tracks/download id tx)
           track (tracks/get-by-id id tx)]
       (is (not (nil? id)))
@@ -46,12 +46,12 @@
       (is (not (nil? track)))
       (is (not (nil? (:status track))))
       (is (= (:status track) "downloaded"))
-      ;; (is (pos? (:track_duration track)))
+      (is (pos? (:track_duration track)))
       )))
 
-(deftest playlist-can-be-downloaded-and-status-and-duration-are-populated
-  (testing "downloaded playlist has the adequate status, file path and title"
-    (let [id (tracks/create {:url playlist-url :title "testname" :note "testdescription"} tx)
+(deftest after-downloading-playlist-status-and-duration-are-populated
+  (testing "downloaded playlist has the adequate status and duration"
+    (let [id (tracks/persist-track {:url playlist-url :title "testname" :note "testdescription"} tx)
           response (tracks/download id tx)
           track (tracks/get-by-id id tx)]
       (is (not (nil? id)))
@@ -59,12 +59,12 @@
       (is (not (nil? track)))
       (is (not (nil? (:status track))))
       (is (= (:status track) "downloaded"))
-      ;; (is (pos? (:track_duration track)))
+      (is (pos? (:track_duration track)))
       )))
 
-(deftest song-track-has-correct-file-path
-  (testing "song track has the correct file path"
-    (let [id (tracks/create {:url one-song-url :title "testname" :note "testdescription"} tx)
+(deftest after-downloading-one-song-correct-file-path
+  (testing "song track has the correct file path after it is downloaded"
+    (let [id (tracks/persist-track {:url one-song-url :title "testname" :note "testdescription"} tx)
           response (tracks/download id tx)
           tracks (tracks/all tx)]
       (is (not (nil? id)))
@@ -75,9 +75,9 @@
       (is (tracks/file-exist (first tracks)))
       )))
 
-(deftest playlist-track-has-correct-file-path
+(deftest after-downloading-playlist-track-has-the-correct-file-path
   (testing "playlist track has the correct file path"
-    (let [id (tracks/create {:url playlist-url :title "testname" :note "testdescription"} tx)
+    (let [id (tracks/persist-track {:url playlist-url :title "testname" :note "testdescription"} tx)
           response (tracks/download id tx)
           tracks (tracks/all tx)]
       (is (not (nil? id)))
