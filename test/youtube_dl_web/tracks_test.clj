@@ -36,7 +36,7 @@
       (tracks/delete id tx)
       (is (nil? (tracks/get-by-id id tx))))))
 
-(deftest after-downloading-one-song-status-and-duration-are-populated
+(deftest after-downloading-one-song-no-conversion-status-and-duration-are-populated
 (testing "downloaded track has the adequate status and duration"
     (let [id (tracks/persist-track {:url one-song-url :title "testname" :note "testdescription"} tx)
           response (tracks/download id tx)
@@ -46,10 +46,9 @@
       (is (not (nil? track)))
       (is (not (nil? (:status track))))
       (is (= (:status track) "downloaded"))
-      (is (pos? (:track_duration track)))
-      )))
+      (is (pos? (:track_duration track))))))
 
-(deftest after-downloading-playlist-status-and-duration-are-populated
+(deftest after-downloading-playlist-no-conversion-status-and-duration-are-populated
   (testing "downloaded playlist has the adequate status and duration"
     (let [id (tracks/persist-track {:url playlist-url :title "testname" :note "testdescription"} tx)
           response (tracks/download id tx)
@@ -59,10 +58,9 @@
       (is (not (nil? track)))
       (is (not (nil? (:status track))))
       (is (= (:status track) "downloaded"))
-      (is (pos? (:track_duration track)))
-      )))
+      (is (pos? (:track_duration track))))))
 
-(deftest after-downloading-one-song-correct-file-path
+(deftest after-downloading-one-song-no-conversion-file-exists
   (testing "song track has the correct file path after it is downloaded"
     (let [id (tracks/persist-track {:url one-song-url :title "testname" :note "testdescription"} tx)
           response (tracks/download id tx)
@@ -72,12 +70,12 @@
       (is (not (nil? tracks)))
       (is (not (empty? tracks)))
       (is (= (count tracks) 1))
-      (is (tracks/file-exist (first tracks)))
-      )))
+      (is (tracks/file-exist (first tracks))))))
 
-(deftest after-downloading-playlist-track-has-the-correct-file-path
-  (testing "playlist track has the correct file path"
-    (let [id (tracks/persist-track {:url playlist-url :title "testname" :note "testdescription"} tx)
+(deftest after-downloading-one-song-do-conversion-then-file-exists
+  (testing "song track has the correct file path after it is downloaded"
+    (let [id (tracks/persist-track {:url one-song-url :title "testname"
+                                    :note "testdescription" :convert_to_mp3 1} tx)
           response (tracks/download id tx)
           tracks (tracks/all tx)]
       (is (not (nil? id)))
@@ -85,5 +83,18 @@
       (is (not (nil? tracks)))
       (is (not (empty? tracks)))
       (is (= (count tracks) 1))
-      (is (tracks/file-exist (first tracks)))
-      )))
+      (is (tracks/file-exist (first tracks))))))
+
+
+(deftest after-downloading-playlist-track-has-the-correct-file-path
+  (testing "playlist track has the correct file path"
+    (let [id (tracks/persist-track {:url playlist-url :title "testname"
+                                    :note "testdescription"} tx)
+          response (tracks/download id tx)
+          tracks (tracks/all tx)]
+      (is (not (nil? id)))
+      (is (not (nil? response)))
+      (is (not (nil? tracks)))
+      (is (not (empty? tracks)))
+      (is (= (count tracks) 1))
+      (is (tracks/file-exist (first tracks))))))

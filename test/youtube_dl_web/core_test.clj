@@ -46,13 +46,13 @@
 
 (deftest persist-one-song-no-download-and-no-convert
   (testing "persist one song, don't download and don't convert to mp3"
-    (persist-track-request one-song-url false false)
+    (persist-track-request one-song-url 0 0)
     (check-persisted-track one-song-url nil)
     (delete-persisted-track one-song-url)))
 
 (deftest persist-one-song-no-download-and-no-convert-then-download
   (testing "persist one song, don't download and don't convert to mp3 and then download it"
-    (persist-track-request one-song-url false false)
+    (persist-track-request one-song-url 0 0)
     (check-persisted-track one-song-url nil)
     (download-track-request one-song-url)
     (check-persisted-track one-song-url "downloaded")
@@ -60,18 +60,18 @@
 
 (deftest persist-one-song-no-download-and-convert
   (testing "persist one song, don't download and mark to convert to mp3"
-    (persist-track-request one-song-url false true)
+    (persist-track-request one-song-url 0 1)
     (check-persisted-track one-song-url nil)
     (delete-persisted-track one-song-url)))
 
 (deftest persist-one-song-download-and-convert
   (testing "persist one song marked to download and convert to mp3"
-    (persist-track-request one-song-url true true)
+    (persist-track-request one-song-url 1 1)
     (check-persisted-track one-song-url "downloaded")
     (delete-persisted-track one-song-url)))
 
 (deftest persist-one-song-download-no-conversion
   (testing "persist one song marked to download without conversion"
-    (persist-track-request one-song-url true false)
+    (persist-track-request one-song-url 1 0)
     (check-persisted-track one-song-url "downloaded")
     (delete-persisted-track one-song-url)))

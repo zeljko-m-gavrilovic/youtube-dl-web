@@ -30,7 +30,7 @@
       (sp/render-file "templates/track-form.html" {}))
 
     (cc/POST "/persist-track" request 
-        (tracks/persist-track (:params request))
+        (tracks/persist-track (:params request) tracks/db)
         (resp/redirect "/"))
 
     (cc/GET "/delete/:id" [id]
