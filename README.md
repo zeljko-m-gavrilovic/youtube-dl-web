@@ -11,8 +11,8 @@ In order to run this application you will need to have the folowing software ins
 machine:
 * [java](http://www.oracle.com/technetwork/java/javase/downloads/index.html),
 * [youtube-dl](https://rg3.github.io/youtube-dl) and
-* [ffmpeg](https://www.ffmpeg.org) or [avconv](https://libav.org) if you need to convert 
-from one format to another.
+* [ffmpeg](https://www.ffmpeg.org) and [avconv](https://libav.org) if you need to convert 
+from one format to another. ```sudo apt-get install ffmpeg libav-tools```
 
 ## Run the application
 
