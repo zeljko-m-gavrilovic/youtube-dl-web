@@ -14,30 +14,32 @@
 (sf/add-filter! :format-miliseconds-to-minutes tracks/format-miliseconds-to-minutes)
 (sf/add-filter! :format-time tracks/format-time)
 
+(def counter (atom 0))
 
 (cc/defroutes app-routes
-    (cc/GET "/" [] 
-      (sp/render-file "templates/tracks.html" {:tracks (tracks/files-exist (tracks/all tracks/db))}))
+              (cc/GET "/" [] (do
+                               (swap! counter inc)
+                               (sp/render-file "templates/tracks.html" {:tracks (tracks/files-exist (tracks/all tracks/db))})))
 
-    (cc/GET "/about" [] 
-      (sp/render-file "templates/about.html" {:about (slurp (io/resource "README.md"))}))
+              (cc/GET "/about" []
+                (sp/render-file "templates/about.html" {:about (slurp (io/resource "README.md"))}))
 
-    (cc/GET "/download/:id" [id] (do 
-      (tracks/download id tracks/db)
-      (resp/redirect "/")))
+              (cc/GET "/download/:id" [id] (do
+                                             (tracks/download id tracks/db)
+                                             (resp/redirect "/")))
 
-    (cc/GET "/track-form" []
-      (sp/render-file "templates/track-form.html" {}))
+              (cc/GET "/track-form" []
+                (sp/render-file "templates/track-form.html" {}))
 
-    (cc/POST "/persist-track" request 
-        (tracks/persist-track (:params request) tracks/db)
-        (resp/redirect "/"))
+              (cc/POST "/persist-track" request
+                (tracks/persist-track (:params request) tracks/db)
+                (resp/redirect "/"))
 
-    (cc/GET "/delete/:id" [id]
-        (tracks/delete id tracks/db)
-        (resp/redirect "/"))
+              (cc/GET "/delete/:id" [id]
+                (tracks/delete id tracks/db)
+                (resp/redirect "/"))
 
-    (cr/not-found "<h1>Page not found</h1>"))
+              (cr/not-found "<h1>Page not found</h1>"))
 
 (def app
   (-> (cc/routes app-routes)

@@ -7,6 +7,7 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  [compojure "1.5.1"]
                  [ring/ring-defaults "0.2.1"]
+                 [ring/ring-jetty-adapter "1.6.3"]
                  [com.github.sapher/youtubedl-java "1.0"]
                  [org.clojure/java.jdbc "0.4.2"]
                  [mysql/mysql-connector-java "5.1.6"]
@@ -15,7 +16,10 @@
                  [selmer "1.10.5"]
                  [markdown-clj "0.9.94"]]
   :repositories [["jitpack" "https://jitpack.io"]]
-  :plugins [[lein-ring "0.10.0"]]
-  :ring {:handler youtube-dl-web.core/app}
+  :plugins [[lein-ring "0.10.0"]
+            [cider/cider-nrepl "0.15.1"]]
+  :ring {:handler youtube-dl-web.core/app
+         :nrepl {:start? true :port 4000}}
+
   :profiles {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
                                   [ring/ring-mock "0.3.0"]]}})
